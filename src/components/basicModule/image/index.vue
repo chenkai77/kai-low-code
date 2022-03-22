@@ -5,18 +5,18 @@
 -->
 <template>
   <div class="image-component">
-    <img :src="src" />
+    <img :src="src" class="image" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
-  name: 'text',
+  name: 'image',
   props: {
     src: {
       type: String,
-      default: ''
+      default: 'https://chenkai.xyz/xkg/images/banner3.png'
     }
   },
   setup() {
@@ -29,6 +29,9 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
-.text-wrapper {
+.image-component {
+  .image {
+    width: 200px;
+  }
 }
 </style>

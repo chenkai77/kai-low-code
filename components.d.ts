@@ -4,9 +4,11 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElInput: typeof import('element-plus/es')['ElInput']
-    Image: typeof import('./src/components/basicComponents/image/index.vue')['default']
-    Text: typeof import('./src/components/basicComponents/text/index.vue')['default']
+    Button: typeof import('./src/components/basicModule/button/index.vue')['default']
+    Image: typeof import('./src/components/basicModule/image/index.vue')['default']
+    ModuleRender: typeof import('./src/components/common/ModuleRender.vue')['default']
+    Preview: typeof import('./src/components/basicModule/button/preview.vue')['default']
+    Text: typeof import('./src/components/basicModule/text/index.vue')['default']
   }
 }
 

@@ -5,24 +5,21 @@
 -->
 <template>
   <div class="home-wrapper">
-    <ComponentsDrag />
+    <ModuleDrag />
     <div class="center-box">
       <Draggable
-        v-model="componentsList"
-        tag="transition-group"
-        item-key="value"
-        :component-data="{
-          tag: 'div',
-          type: 'transition-group',
-          name: 'flip-list'
-        }"
-        :group="{ name: 'components', pull: 'clone', put: true }"
+        v-model="pageModuleList"
+        item-key="name"
+        :group="{ name: 'modules', put: true }"
         class="center-box-drag"
+        ghostClass="ghost"
         @Change="dragChange"
         @clone="dragClone"
       >
         <template #item="{ element }">
-          <div class="component-item">{{ element.value }}</div>
+          <div>
+            <ModuleRender :module-date="element"></ModuleRender>
+          </div>
         </template>
       </Draggable>
     </div>
@@ -32,17 +29,20 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import Draggable from 'vuedraggable';
-import ComponentsDrag from '@/views/home/ComponentsDrag/index.vue'
+import ModuleDrag from '@/views/home/ModuleDrag/index.vue'
+import ModuleRender from '@/components/common/ModuleRender.vue';
+
 export default defineComponent({
   name: 'home',
   components: {
-    ComponentsDrag,
-    Draggable
+    ModuleDrag,
+    Draggable,
+    ModuleRender
   },
   setup() {
-    const componentsList = ref([{ value: 555 }, { value: 444 }])
+    const pageModuleList = ref([])
     function dragChange(val: any) {
-      console.log(val)
+      console.log(val, pageModuleList.value)
     }
     function dragClone(val: any) {
       console.log(val)
@@ -50,7 +50,7 @@ export default defineComponent({
     return {
       dragClone,
       dragChange,
-      componentsList
+      pageModuleList
     }
   }
 })
@@ -75,6 +75,9 @@ export default defineComponent({
       width: 100%;
       height: 100%;
     }
+  }
+  .ghost {
+    background: #ffeaa7;
   }
 }
 </style>

@@ -4,15 +4,17 @@
  * @Description: 左边组件拖拽区
 -->
 <template>
-  <div class="components-drag">
+  <div class="module-drag">
     <Draggable
-      v-model="arr"
-      item-key="value"
+      v-model="moduleList"
+      item-key="name"
       :sort="false"
-      :group="{ name: 'components', pull: 'clone', put: false }"
+      :group="{ name: 'modules', pull: 'clone', put: false }"
     >
       <template #item="{ element }">
-        <div class="component-item">{{ element.value }}</div>
+        <div class="module-item">
+          <component :is="element.preview"></component>
+        </div>
       </template>
     </Draggable>
   </div>
@@ -23,15 +25,21 @@ import {
   defineComponent,
 } from 'vue'
 import Draggable from 'vuedraggable';
+import moduleObj, { moduleList } from "@/components/basicModule/index";
+
 export default defineComponent({
-  name: 'ComponentsDrag',
+  name: 'ModuleDrag',
   components: {
     Draggable
   },
   setup() {
-    const arr = [{ value: '111111111111111111' }, { value: '2222222222222222222' }, { value: '33333333333333333' }, { value: '44444444444444444444' }]
+    function log(evt: any) {
+      window.console.log(evt);
+    }
+
     return {
-      arr
+      moduleList,
+      log,
     }
   }
 })
@@ -39,7 +47,7 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
-.components-drag {
+.module-drag {
   position: absolute;
   left: 0;
   top: 0;
@@ -49,7 +57,7 @@ export default defineComponent({
   background: #fff;
   padding: 8px;
   box-sizing: border-box;
-  .component-item {
+  .module-item {
     border: 1px solid #eee;
     border-radius: 4px;
     margin-bottom: 10px;
