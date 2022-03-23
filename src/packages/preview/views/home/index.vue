@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import ModuleRender from '@/components/common/ModuleRender.vue';
+import ModuleRender from '@src/components/common/ModuleRender.vue';
 
 export default defineComponent({
   name: 'home',

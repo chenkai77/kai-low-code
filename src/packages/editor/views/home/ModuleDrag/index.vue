@@ -5,18 +5,25 @@
 -->
 <template>
   <div class="module-drag">
-    <Draggable
-      v-model="moduleList"
-      item-key="name"
-      :sort="false"
-      :group="{ name: 'modules', pull: 'clone', put: false }"
-    >
-      <template #item="{ element }">
-        <div class="module-item">
-          <component :is="element.preview"></component>
-        </div>
-      </template>
-    </Draggable>
+    <el-tabs tab-position="left" style="height: 100%" class="tabs-wrapper">
+      <el-tab-pane label="页面"></el-tab-pane>
+      <el-tab-pane label="基础">
+        <Draggable
+          v-model="moduleList"
+          item-key="name"
+          :sort="false"
+          :group="{ name: 'modules', pull: 'clone', put: false }"
+        >
+          <template #item="{ element }">
+            <div class="module-item">
+              <component :is="element.preview"></component>
+            </div>
+          </template>
+        </Draggable>
+      </el-tab-pane>
+      <el-tab-pane label="图表">图表</el-tab-pane>
+      <el-tab-pane label="业务">业务</el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -25,7 +32,7 @@ import {
   defineComponent,
 } from 'vue'
 import Draggable from 'vuedraggable';
-import moduleObj, { moduleList } from "@/components/basicModule/index";
+import moduleObj, { moduleList } from "@src/components/basicModule/index";
 
 export default defineComponent({
   name: 'ModuleDrag',
@@ -56,7 +63,6 @@ export default defineComponent({
   border-right: 1px solid #eee;
   background: #fff;
   padding: 8px;
-  box-sizing: border-box;
   .module-item {
     border: 1px solid #eee;
     border-radius: 4px;

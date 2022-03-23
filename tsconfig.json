@@ -14,9 +14,11 @@
     // "types": ["vite/client", "./node_modules/@types"]
     "baseUrl": ".",
     "paths": {
-      "@/*": [ "src/*" ],
+      "@src/*": [ "src/*" ],
+      "@editor/*": [ "src/packages/editor/*" ],
+      "@preview/*": [ "src/packages/preview/*" ],
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue",],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

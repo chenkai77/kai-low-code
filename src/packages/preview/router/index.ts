@@ -1,8 +1,13 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  RouteRecordRaw,
+  createWebHashHistory,
+} from "vue-router";
 
 export const routes: Array<RouteRecordRaw> = [
   {
-    path: "/home",
+    path: "/preview",
     name: "Home",
     component: () => import("../views/home/index.vue"),
   },

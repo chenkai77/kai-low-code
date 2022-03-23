@@ -1,23 +1,25 @@
 <!--
  * @Author: depp.chen
- * @Date: 2022-03-09 14:39:10
- * @Description: 主页
+ * @Date: 2022-03-23 14:59:34
+ * @Description: 中间内容区域
 -->
 <template>
-  <div class="home-wrapper">
-    <ModuleDrag />
-    <div class="center-box">
+  <div class="center-box">
+    <div class="editor-wrapper">
       <Draggable
         v-model="pageModuleList"
         item-key="name"
         :group="{ name: 'modules', put: true }"
-        class="center-box-drag"
+        class="drag-wrapper"
+        :class="{ isDrag }"
         ghostClass="ghost"
         @Change="dragChange"
         @clone="dragClone"
+        @start="isDrag = true"
+        @end="isDrag = false"
       >
         <template #item="{ element }">
-          <div>
+          <div class="drag-item">
             <ModuleRender :module-date="element"></ModuleRender>
           </div>
         </template>
@@ -29,17 +31,21 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import Draggable from 'vuedraggable';
-import ModuleDrag from '@/views/home/ModuleDrag/index.vue'
-import ModuleRender from '@/components/common/ModuleRender.vue';
+import ModuleDrag from '@editor/views/home/ModuleDrag/index.vue'
+import AttrSetting from '@editor/views/home/AttrSetting/index.vue'
+import ModuleRender from '@src/components/common/ModuleRender.vue';
 
 export default defineComponent({
   name: 'home',
   components: {
     ModuleDrag,
     Draggable,
+    AttrSetting,
     ModuleRender
   },
   setup() {
+    // 是否处于拖拽状态
+    const isDrag = ref(false)
     const pageModuleList = ref([])
     function dragChange(val: any) {
       console.log(val, pageModuleList.value)
@@ -50,7 +56,8 @@ export default defineComponent({
     return {
       dragClone,
       dragChange,
-      pageModuleList
+      pageModuleList,
+      isDrag
     }
   }
 })
@@ -58,26 +65,40 @@ export default defineComponent({
 
 
 <style scoped lang="scss">
-.home-wrapper {
-  height: 100vh;
-  width: 100vw;
-  padding: 0 300px 0 300px;
-  background: #f5f5f5;
-  .center-box {
+.center-box {
+  width: 100%;
+  min-width: 375px;
+  height: 100%;
+  position: relative;
+  .editor-wrapper {
     position: absolute;
-    left: 700px;
+    left: 50%;
     top: 100px;
     width: 375px;
     height: 667px;
     background: #fff;
     box-shadow: 2px 0 10px rgb(0 0 0 / 20%);
-    .center-box-drag {
+    transform: translateX(-50%);
+    .drag-wrapper {
       width: 100%;
       height: 100%;
+      // &.isDrag .drag-item :deep(.module-render) {
+      //   border: 1px solid #fab005;
+      // }
     }
   }
-  .ghost {
-    background: #ffeaa7;
+}
+.ghost {
+  &::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: #ffe066;
+    box-sizing: border-box;
+    border: 2px solid #fab005;
   }
 }
 </style>
