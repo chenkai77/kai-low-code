@@ -4,7 +4,6 @@
  * @Description: 导入所有组件
  */
 const modules = import.meta.globEager("./*/index.vue");
-const modulePreview = import.meta.globEager("./*/preview.vue");
 
 let moduleObj: Record<string, any> = {};
 
@@ -13,15 +12,13 @@ Object.keys(modules).forEach((key) => {
   moduleObj[name] = { ...modules[key].default, name };
 });
 
-Object.keys(modulePreview).forEach((key) => {
-  const keyName = "basic_" + modulePreview[key].default.key;
-  moduleObj[keyName].preview = modulePreview[key].default;
+console.log(moduleObj);
+
+// 基础模块列表
+export const basicPartList = Object.keys(moduleObj).map((e) => {
+  return { ...moduleObj[e].key, name: moduleObj[e].name };
 });
 
-export const moduleList = Object.keys(moduleObj).map((e) => {
-  return moduleObj[e];
-});
-
-console.log(moduleList);
+console.log(basicPartList);
 
 export default moduleObj;

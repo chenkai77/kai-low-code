@@ -9,12 +9,19 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { attrFormTypeEnum } from '@src/enums/attrFormType'
 export default defineComponent({
   name: 'text',
+  key: {
+    label: '文本',
+    icon: 'icon-img'
+  },
   props: {
     text: {
       type: String,
-      default: '默认文本'
+      label: '文字',
+      default: '默认文本',
+      formType: attrFormTypeEnum.input,
     }
   },
   setup() {

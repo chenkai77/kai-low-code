@@ -13,6 +13,10 @@
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'image',
+  key: {
+    label: '图片',
+    icon: 'icon-img'
+  },
   props: {
     src: {
       type: String,

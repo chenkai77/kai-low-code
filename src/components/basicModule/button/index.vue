@@ -13,6 +13,10 @@
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'button',
+  key: {
+    label: '按钮',
+    icon: 'icon-img'
+  },
   props: {},
   setup() {
     return {

@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import moduleObj, { moduleList } from "@src/components/basicModule/index";
+import moduleObj from "@src/components/basicModule/index";
 
 export default defineComponent({
   name: 'ModuleRender',

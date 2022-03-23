@@ -9,15 +9,14 @@
       <el-tab-pane label="页面"></el-tab-pane>
       <el-tab-pane label="基础">
         <Draggable
-          v-model="moduleList"
+          v-model="basicPartList"
           item-key="name"
           :sort="false"
           :group="{ name: 'modules', pull: 'clone', put: false }"
+          class="basic-part-list"
         >
           <template #item="{ element }">
-            <div class="module-item">
-              <component :is="element.preview"></component>
-            </div>
+            <DragItem class="basic-part-item" :label="element.label" :icon="element.icon" />
           </template>
         </Draggable>
       </el-tab-pane>
@@ -32,21 +31,18 @@ import {
   defineComponent,
 } from 'vue'
 import Draggable from 'vuedraggable';
-import moduleObj, { moduleList } from "@src/components/basicModule/index";
+import { basicPartList } from "@src/components/basicModule/index";
+import DragItem from './components/DragItem.vue'
 
 export default defineComponent({
   name: 'ModuleDrag',
   components: {
-    Draggable
+    Draggable,
+    DragItem
   },
   setup() {
-    function log(evt: any) {
-      window.console.log(evt);
-    }
-
     return {
-      moduleList,
-      log,
+      basicPartList,
     }
   }
 })
@@ -63,12 +59,14 @@ export default defineComponent({
   border-right: 1px solid #eee;
   background: #fff;
   padding: 8px;
-  .module-item {
-    border: 1px solid #eee;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    padding: 8px;
-    cursor: move;
+
+  .basic-part-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .basic-part-item {
+      width: 48%;
+    }
   }
 }
 </style>

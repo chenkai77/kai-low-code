@@ -8,7 +8,7 @@
     <TopHeader />
     <div class="content">
       <ModuleDrag />
-      <AttrSetting />
+      <DataSetting />
       <CenterBox />
     </div>
   </div>
@@ -18,7 +18,7 @@
 import { defineComponent, ref } from 'vue'
 import Draggable from 'vuedraggable';
 import ModuleDrag from '@editor/views/home/ModuleDrag/index.vue'
-import AttrSetting from '@editor/views/home/AttrSetting/index.vue'
+import DataSetting from '@editor/views/home/DataSetting/index.vue'
 import CenterBox from '@editor/views/home/CenterBox/index.vue';
 import TopHeader from '@editor/views/home/TopHeader/index.vue';
 import ModuleRender from '@src/components/common/ModuleRender.vue';
@@ -28,7 +28,7 @@ export default defineComponent({
   components: {
     ModuleDrag,
     Draggable,
-    AttrSetting,
+    DataSetting,
     ModuleRender,
     CenterBox,
     TopHeader

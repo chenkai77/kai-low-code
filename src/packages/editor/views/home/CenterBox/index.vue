@@ -19,7 +19,7 @@
         @end="isDrag = false"
       >
         <template #item="{ element }">
-          <div class="drag-item">
+          <div class="drag-item" @click="moduleActive(element)">
             <ModuleRender :module-date="element"></ModuleRender>
           </div>
         </template>
@@ -29,40 +29,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Draggable from 'vuedraggable';
-import ModuleDrag from '@editor/views/home/ModuleDrag/index.vue'
-import AttrSetting from '@editor/views/home/AttrSetting/index.vue'
-import ModuleRender from '@src/components/common/ModuleRender.vue';
-
+import { defineComponent, onMounted, ref } from "vue";
+import Draggable from "vuedraggable";
+import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
+import ModuleRender from "@src/components/common/ModuleRender.vue";
 export default defineComponent({
-  name: 'home',
+  name: "home",
   components: {
     ModuleDrag,
     Draggable,
-    AttrSetting,
-    ModuleRender
+    ModuleRender,
   },
   setup() {
     // 是否处于拖拽状态
-    const isDrag = ref(false)
-    const pageModuleList = ref([])
+    const isDrag = ref(false);
+    const pageModuleList = ref([]);
     function dragChange(val: any) {
-      console.log(val, pageModuleList.value)
+      console.log(val, pageModuleList.value);
     }
     function dragClone(val: any) {
-      console.log(val)
+      console.log(val);
     }
+
+    function moduleActive(element: any) {}
+
     return {
       dragClone,
       dragChange,
       pageModuleList,
-      isDrag
-    }
-  }
-})
+      isDrag,
+      moduleActive,
+    };
+  },
+});
 </script>
-
 
 <style scoped lang="scss">
 .center-box {
@@ -96,9 +96,9 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     content: "";
-    background: #ffe066;
     box-sizing: border-box;
-    border: 2px solid #fab005;
+    background: $color-primary-shallow;
+    border: 2px solid $color-primary;
   }
 }
 </style>

@@ -15,7 +15,11 @@ export default defineConfig({
     }),
     Components({
       dirs: ["src/components/common"],
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver({
+          importStyle: "sass",
+        }),
+      ],
     }),
     styleImport({
       resolves: [VantResolve()],
@@ -26,6 +30,16 @@ export default defineConfig({
       "@src": resolve(__dirname, "src"),
       "@editor": resolve(__dirname, "src/packages/editor"),
       "@preview": resolve(__dirname, "src/packages/preview"),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @use "@src/styles/elementUiTheme.scss" as *;
+          @use "@src/styles/variables.scss" as *;
+        `,
+      },
     },
   },
   // 预构建
