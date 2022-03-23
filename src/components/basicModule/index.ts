@@ -12,13 +12,15 @@ Object.keys(modules).forEach((key) => {
   moduleObj[name] = { ...modules[key].default, name };
 });
 
-console.log(moduleObj);
-
 // 基础模块列表
 export const basicPartList = Object.keys(moduleObj).map((e) => {
   return { ...moduleObj[e].key, name: moduleObj[e].name };
 });
 
-console.log(basicPartList);
-
+// 基础模块映射
 export default moduleObj;
+
+//
+
+console.log(moduleObj);
+console.log(basicPartList);
