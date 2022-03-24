@@ -6,7 +6,9 @@
 <template>
   <div class="module-drag">
     <el-tabs tab-position="left" style="height: 100%" class="tabs-wrapper">
-      <el-tab-pane label="页面"></el-tab-pane>
+      <el-tab-pane label="页面">
+        <PageTab />
+      </el-tab-pane>
       <el-tab-pane label="基础">
         <Draggable
           v-model="basicPartList"
@@ -14,9 +16,14 @@
           :sort="false"
           :group="{ name: 'modules', pull: 'clone', put: false }"
           class="basic-part-list"
+          :clone="dragClone"
         >
           <template #item="{ element }">
-            <DragItem class="basic-part-item" :label="element.label" :icon="element.icon" />
+            <DragItem
+              class="basic-part-item"
+              :label="element.label"
+              :icon="element.icon"
+            />
           </template>
         </Draggable>
       </el-tab-pane>
@@ -27,27 +34,38 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-} from 'vue'
-import Draggable from 'vuedraggable';
+import { defineComponent } from "vue";
+import Draggable from "vuedraggable";
 import { basicPartList } from "@src/components/basicModule/index";
-import DragItem from './components/DragItem.vue'
+import DragItem from "./components/DragItem.vue";
+import PageTab from "./PageTab/index.vue";
+import { cloneLoop } from "@src/utils/cloneDeep";
+import { IModule } from "@src/types/module.d";
 
 export default defineComponent({
-  name: 'ModuleDrag',
+  name: "ModuleDrag",
   components: {
     Draggable,
-    DragItem
+    DragItem,
+    PageTab,
   },
   setup() {
-    return {
-      basicPartList,
-    }
-  }
-})
-</script>
+    /**
+     * @description: 拖拽克隆
+     * @author: depp.chen
+     */
+    const dragClone = (val: IModule) => {
+      console.log("当前拖拽克隆的组件:", val);
+      return cloneLoop(val);
+    };
 
+    return {
+      dragClone,
+      basicPartList,
+    };
+  },
+});
+</script>
 
 <style scoped lang="scss">
 .module-drag {

@@ -1,21 +1,56 @@
 <template>
   <div class="attr-set">
-    <el-form :model="form" label-width="100px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-    </el-form>
+    <div v-if="pageActiveModule && pageActiveModule.props">
+      <el-form>
+        <el-form-item
+          :label="item.label"
+          v-for="item in formList"
+          :key="item.propsKey"
+        >
+          <component
+            :is="attrFormComMap[item.formType]"
+            v-model="item.formValue"
+          ></component>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, watch, ref } from "vue";
+import useModuleStore from "@editor/store/module";
+import { attrFormComMap, attrFormTypeEnum } from "@src/enums/attrFormType";
+import { IModule } from "@src/types/module.d";
+
 export default defineComponent({
   name: "AttrSetting",
   setup() {
-    const form = {};
+    const moduleStore = useModuleStore();
+
+    const pageActiveModule = computed(() => moduleStore.pageActiveModule);
+
+    const formList = ref<IModule["props"][]>([]);
+
+    watch(
+      () => moduleStore.pageActiveModule.key,
+      () => {
+        if (moduleStore.pageActiveModule.props) {
+          let propsData = moduleStore.pageActiveModule.props;
+          formList.value = Object.keys(propsData).map((e) => propsData[e]);
+        } else {
+          formList.value = [];
+        }
+      },
+      {
+        immediate: true,
+      }
+    );
+
     return {
-      form,
+      formList,
+      attrFormComMap,
+      pageActiveModule,
     };
   },
 });

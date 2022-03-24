@@ -12,9 +12,20 @@ Object.keys(modules).forEach((key) => {
   moduleObj[name] = { ...modules[key].default, name };
 });
 
+console.log(moduleObj);
 // 基础模块列表
 export const basicPartList = Object.keys(moduleObj).map((e) => {
-  return { ...moduleObj[e].key, name: moduleObj[e].name };
+  Object.keys(moduleObj[e].props).forEach((key) => {
+    moduleObj[e].props[key].formValue = moduleObj[e].props[key].default;
+    moduleObj[e].props[key].propsKey = key;
+  });
+  return {
+    ...moduleObj[e].key,
+    name: moduleObj[e].name,
+    props: {
+      ...moduleObj[e].props,
+    },
+  };
 });
 
 // 基础模块映射
