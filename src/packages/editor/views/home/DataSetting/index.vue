@@ -14,6 +14,9 @@
       <el-tab-pane label="属性">
         <AttrSet />
       </el-tab-pane>
+      <el-tab-pane label="操作" v-if="pageActiveModule.key">
+        <ModuleOperation />
+      </el-tab-pane>
       <el-tab-pane label="事件"></el-tab-pane>
     </el-tabs>
   </div>
@@ -22,13 +25,22 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AttrSet from "./components/AttrSet.vue";
+import ModuleOperation from "./components/ModuleOperation.vue";
+import { getModuleStoreData } from "@editor/hooks/moduleStore";
+
 export default defineComponent({
   name: "AttrSetting",
   components: {
     AttrSet,
+    ModuleOperation,
   },
   setup() {
-    return {};
+    // 模块STORE数据
+    const { pageActiveModule } = getModuleStoreData();
+
+    return {
+      pageActiveModule,
+    };
   },
 });
 </script>

@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Draggable from "vuedraggable";
-import { basicPartList } from "@src/components/basicModule/index";
+import { basicPartList } from "@src/components/module";
 import DragItem from "./components/DragItem.vue";
 import PageTab from "./PageTab/index.vue";
 import { cloneLoop } from "@src/utils/cloneDeep";

@@ -26,6 +26,7 @@
 import { computed, defineComponent, ref } from "vue";
 import useModuleStore from "@editor/store/module";
 import AddPage from "./AddPage.vue";
+import { getModuleStoreData } from "@editor/hooks/moduleStore";
 
 export default defineComponent({
   name: "PageTab",
@@ -34,13 +35,7 @@ export default defineComponent({
   },
   setup() {
     const moduleStore = useModuleStore();
-
     const addPageVisible = ref(false);
-
-    // 页面集合
-    const pageList = computed(() => moduleStore.pageList);
-    // 激活页面
-    const activePage = computed(() => moduleStore.activePageRoute);
 
     function addPage() {
       addPageVisible.value = true;
@@ -49,6 +44,9 @@ export default defineComponent({
     function selectActivePage(page: IPage) {
       moduleStore.changeActivePageRoute(page.route);
     }
+
+    // 模块STORE数据
+    const { pageList, activePage } = getModuleStoreData();
 
     return {
       pageList,

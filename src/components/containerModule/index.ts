@@ -1,19 +1,19 @@
 /*
  * @Author: depp.chen
- * @Date: 2022-03-22 09:35:35
- * @Description: 导入所有组件
+ * @Date: 2022-03-25 17:54:38
+ * @Description: 容器
  */
 const modules = import.meta.globEager("./*/index.vue");
 
 let moduleObj: Record<string, any> = {};
 
 Object.keys(modules).forEach((key) => {
-  const name = "basic_" + modules[key].default.name;
+  const name = "container_" + modules[key].default.name;
   moduleObj[name] = { ...modules[key].default, name };
 });
 
 // 基础模块列表
-export const basicPartList = Object.keys(moduleObj).map((e) => {
+export const containerPartList = Object.keys(moduleObj).map((e) => {
   Object.keys(moduleObj[e].props).forEach((key) => {
     moduleObj[e].props[key].formValue = moduleObj[e].props[key].default;
     moduleObj[e].props[key].propsKey = key;

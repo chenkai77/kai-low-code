@@ -50,8 +50,8 @@ const useModuleStore = defineStore("module", {
      * @description: 修改当前激活页面的激活模块
      * @author: depp.chen
      */
-    changePageActiveModule(module: IModule) {
-      this.pageActiveModule = module;
+    changePageActiveModule(module: IModule | {}) {
+      this.pageActiveModule = module as IModule;
     },
   },
 });

@@ -1,19 +1,11 @@
+<!--
+ * @Author: depp.chen
+ * @Date: 2022-03-25 15:50:29
+ * @Description: 模块操作
+-->
 <template>
-  <div class="attr-set">
-    <div v-if="pageActiveModule && pageActiveModule.props">
-      <el-form>
-        <el-form-item
-          :label="item.label"
-          v-for="item in formList"
-          :key="item.propsKey"
-        >
-          <component
-            :is="attrFormComMap[item.formType]"
-            v-model="item.formValue"
-          ></component>
-        </el-form-item>
-      </el-form>
-    </div>
+  <div class="module-operation">
+    <el-button type="danger">删除</el-button>
   </div>
 </template>
 
@@ -25,7 +17,7 @@ import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 
 export default defineComponent({
-  name: "AttrSetting",
+  name: "ModuleOperation",
   setup() {
     const moduleStore = useModuleStore();
 
@@ -59,6 +51,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.attr-set {
+.module-operation {
 }
 </style>

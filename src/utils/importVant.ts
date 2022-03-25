@@ -4,9 +4,9 @@
  * @Description: Vant 按需导入
  */
 import type { App } from "vue";
-import { Button } from "vant";
+import { Button, Col, Row } from "vant";
 
-const components = [Button];
+const components = [Button, Col, Row];
 
 export default function introduceElement(app: App): void {
   components.forEach((component) => {

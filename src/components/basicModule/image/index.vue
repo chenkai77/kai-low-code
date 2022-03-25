@@ -4,38 +4,32 @@
  * @Description: 图片组件
 -->
 <template>
-  <div class="image-component">
-    <img :src="src" class="image" />
-  </div>
+  <img :src="src" class="image-module" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from "vue";
 export default defineComponent({
-  name: 'image',
+  name: "image",
   key: {
-    label: '图片',
-    icon: 'icon-img'
+    label: "图片",
+    icon: "icon-img",
   },
   props: {
     src: {
       type: String,
-      default: 'https://chenkai.xyz/xkg/images/banner3.png'
-    }
+      default: "https://chenkai.xyz/xkg/images/banner3.png",
+    },
   },
   setup() {
-
-    return {
-    }
-  }
-})
+    return {};
+  },
+});
 </script>
 
-
 <style scoped lang="scss">
-.image-component {
-  .image {
-    width: 200px;
-  }
+.image-module {
+  width: 200px;
+  font-size: 0;
 }
 </style>

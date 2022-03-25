@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import moduleObj from "@src/components/basicModule/index";
+import { moduleObj } from "@src/components/module";
 
 export default defineComponent({
   name: "ModuleRender",
@@ -41,6 +41,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.home-wrapper {
+.module-render {
+  font-size: 0;
 }
 </style>

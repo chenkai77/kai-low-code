@@ -1,34 +1,30 @@
 <!--
  * @Author: depp.chen
- * @Date: 2022-03-23 14:59:34
- * @Description: 中间内容区域
+ * @Date: 2022-03-25 18:14:04
+ * @Description: 模块拖拽
 -->
 <template>
-  <div class="center-box">
-    <div class="editor-wrapper">
-      <Draggable
-        v-model="pageModuleList[activePageRoute]"
-        item-key="name"
-        :group="{ name: 'modules' }"
-        class="drag-wrapper"
-        :class="{ isDrag }"
-        ghostClass="ghost"
-        @Change="dragChange"
-        @start="isDrag = true"
-        @end="isDrag = false"
+  <Draggable
+    v-model="pageModuleList[activePageRoute]"
+    item-key="name"
+    :group="{ name: 'modules' }"
+    class="drag-wrapper"
+    :class="{ isDrag }"
+    ghostClass="ghost"
+    @Change="dragChange"
+    @start="isDrag = true"
+    @end="isDrag = false"
+  >
+    <template #item="{ element, index }">
+      <div
+        class="drag-item"
+        @click="moduleActive(element)"
+        :class="{ active: element.key === pageActiveModule.key }"
       >
-        <template #item="{ element, index }">
-          <div
-            class="drag-item"
-            @click="moduleActive(element)"
-            :class="{ active: element.key === pageActiveModule.key }"
-          >
-            <ModuleRender :module-date="element"></ModuleRender>
-          </div>
-        </template>
-      </Draggable>
-    </div>
-  </div>
+        <ModuleRender :module-date="element"></ModuleRender>
+      </div>
+    </template>
+  </Draggable>
 </template>
 
 <script lang="ts">
@@ -41,7 +37,6 @@ import {
   ref,
 } from "vue";
 import Draggable from "vuedraggable";
-import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
 import ModuleRender from "@src/components/common/ModuleRender.vue";
 import useModuleStore from "@editor/store/module";
 import { IModule } from "@src/types/module.d";
@@ -49,7 +44,6 @@ import { getModuleStoreData } from "@editor/hooks/moduleStore";
 export default defineComponent({
   name: "home",
   components: {
-    ModuleDrag,
     Draggable,
     ModuleRender,
   },
@@ -143,9 +137,6 @@ export default defineComponent({
           border: 1px solid $color-primary;
         }
       }
-      // &.isDrag .drag-item :deep(.module-render) {
-      //   border: 1px solid #fab005;
-      // }
     }
   }
 }
