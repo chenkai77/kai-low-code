@@ -4,12 +4,29 @@
  * @Description: 模块类型
  */
 
-import { attrFormTypeEnum } from "@src/enums/attrFormType";
+import { attrFormTypeEnum } from "@editor/enums/attrFormType";
 
+// 模块 props 类型
+export interface IProps {
+  formType: attrFormTypeEnum;
+  propsKey: string;
+  label: string;
+  [key: string]: any;
+}
+
+// 模块类型
 export interface IModule {
-  props: { formType: attrFormTypeEnum; propsKey: string } & Record<string, any>;
+  props: Record<string, IProps>;
   name: string;
   label: string;
   icon: string;
   key: string;
+  propsValue: Record<string, any>;
+}
+
+// 容器组件props colList 属性类型
+export interface ILateralContainerColList {
+  id: string;
+  span: number;
+  moduleList: IModule[];
 }

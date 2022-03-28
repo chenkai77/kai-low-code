@@ -5,12 +5,15 @@
 -->
 <template>
   <div class="module-render">
-    <component :is="moduleObj[moduleName]" v-bind="moduleProps"></component>
+    <component
+      :is="moduleObj[moduleName]"
+      v-bind="moduleDate.propsValue"
+    ></component>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import { moduleObj } from "@src/components/module";
 
 export default defineComponent({
@@ -23,18 +26,10 @@ export default defineComponent({
   },
   setup(props) {
     const moduleName = computed(() => props.moduleDate.name);
-    const moduleProps = computed(() => {
-      let propsObj: Record<string, any> = {};
-      Object.keys(props.moduleDate.props).forEach((e) => {
-        propsObj[e] = props.moduleDate.props[e].formValue;
-      });
-      return propsObj;
-    });
 
     return {
       moduleObj,
       moduleName,
-      moduleProps,
     };
   },
 });

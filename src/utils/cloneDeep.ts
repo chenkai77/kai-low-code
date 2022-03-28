@@ -3,19 +3,23 @@
  * @Date: 2022-03-09 15:03:01
  * @Description: 深拷贝
  */
-export function cloneLoop(x: Record<string, any>) {
-  const root: Record<string, any> = {};
+export function cloneLoop<T extends object = Record<string, any>>(
+  x: Record<string, any>
+) {
+  const root: T = Object.create(null);
 
   // 栈
   const loopList: {
     parent: Record<string, any>;
     key: undefined | string;
     data: Record<string, any>;
+    isArray: boolean;
   }[] = [
     {
       parent: root,
       key: undefined,
       data: x,
+      isArray: false,
     },
   ];
 
@@ -25,11 +29,12 @@ export function cloneLoop(x: Record<string, any>) {
     const parent = node!.parent;
     const key = node!.key;
     const data = node!.data;
+    const isArray = node?.isArray;
 
     // 初始化赋值目标，key为undefined则拷贝到父元素，否则拷贝到子元素
     let res = parent;
     if (typeof key !== "undefined") {
-      res = parent[key] = {};
+      res = parent[key] = isArray ? [] : {};
     }
 
     for (let k in data) {
@@ -40,6 +45,8 @@ export function cloneLoop(x: Record<string, any>) {
             parent: res,
             key: k,
             data: data[k],
+            isArray:
+              Object.prototype.toString.call(data[k]) === "[object Array]",
           });
         } else {
           res[k] = data[k];

@@ -5,8 +5,8 @@
 -->
 <template>
   <Draggable
-    v-model="pageModuleList[activePageRoute]"
-    item-key="name"
+    v-model="dragList"
+    item-key="key"
     :group="{ name: 'modules' }"
     class="drag-wrapper"
     :class="{ isDrag }"
@@ -16,12 +16,16 @@
     @end="isDrag = false"
   >
     <template #item="{ element, index }">
-      <div
-        class="drag-item"
-        @click="moduleActive(element)"
-        :class="{ active: element.key === pageActiveModule.key }"
-      >
-        <ModuleRender :module-date="element"></ModuleRender>
+      <div>
+        <slot :element="element">
+          <div
+            class="drag-item"
+            @click="moduleActive(element)"
+            :class="{ active: element.key === pageActiveModule.key }"
+          >
+            <ModuleRender :module-date="element"></ModuleRender>
+          </div>
+        </slot>
       </div>
     </template>
   </Draggable>
@@ -41,29 +45,29 @@ import ModuleRender from "@src/components/common/ModuleRender.vue";
 import useModuleStore from "@editor/store/module";
 import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
+import { comVModelHook } from "@editor/hooks/componentVModel";
+import { dragHooks } from "@editor/hooks/dragHooks";
+
 export default defineComponent({
-  name: "home",
+  name: "ModuleDraggable",
   components: {
     Draggable,
     ModuleRender,
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: Array,
+      default: [],
+    },
+  },
+  emits: ["update:modelValue"],
+  setup(props, { emit }) {
     // 是否处于拖拽状态
     const isDrag = ref(false);
+
+    const dragList = comVModelHook(props, "modelValue", emit);
     // moduleStore
     const moduleStore = useModuleStore();
-
-    /**
-     * @description: 拖动改变时
-     * @author: depp.chen
-     */
-    function dragChange(val: any) {
-      // 新增时
-      if (val.added) {
-        val.added.element.key = Symbol();
-        moduleStore.changePageActiveModule(val.added.element);
-      }
-    }
 
     /**
      * @description: 模块点击激活
@@ -74,40 +78,18 @@ export default defineComponent({
       moduleStore.changePageActiveModule(element);
     }
 
-    /**
-     * @description: 置空激活模块
-     * @author: depp.chen
-     */
-    function moduleActiveBlur(e: Record<string, any>) {
-      let target = document.querySelector(".center-box .editor-wrapper");
-      let setEl = document.querySelector(".data-setting");
-      if (e.path.indexOf(target) <= -1 && e.path.indexOf(setEl) <= -1) {
-        moduleStore.changePageActiveModule({});
-      }
-    }
-
-    function documentClickListener() {
-      document.addEventListener("click", moduleActiveBlur);
-    }
-
-    onMounted(() => {
-      documentClickListener();
-    });
-
-    onUnmounted(() => {
-      document.removeEventListener("click", moduleActiveBlur);
-    });
-
     // 模块STORE数据
     const { activePageRoute, pageActiveModule } = getModuleStoreData();
+    // 拖拽公用
+    const { dragChange } = dragHooks();
 
     return {
       isDrag,
+      dragList,
       dragChange,
       moduleActive,
       activePageRoute,
       pageActiveModule,
-      moduleActiveBlur,
       pageModuleList: moduleStore.allPageData,
     };
   },

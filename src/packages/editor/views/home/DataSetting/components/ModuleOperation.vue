@@ -5,14 +5,14 @@
 -->
 <template>
   <div class="module-operation">
-    <el-button type="danger">删除</el-button>
+    <el-button type="danger" @click="deleteModule">删除</el-button>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, watch, ref } from "vue";
 import useModuleStore from "@editor/store/module";
-import { attrFormComMap, attrFormTypeEnum } from "@src/enums/attrFormType";
+import { attrFormComMap, attrFormTypeEnum } from "@editor/enums/attrFormType";
 import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 
@@ -21,28 +21,15 @@ export default defineComponent({
   setup() {
     const moduleStore = useModuleStore();
 
-    const formList = ref<IModule["props"][]>([]);
-
-    watch(
-      () => moduleStore.pageActiveModule.key,
-      () => {
-        if (moduleStore.pageActiveModule.props) {
-          let propsData = moduleStore.pageActiveModule.props;
-          formList.value = Object.keys(propsData).map((e) => propsData[e]);
-        } else {
-          formList.value = [];
-        }
-      },
-      {
-        immediate: true,
-      }
-    );
+    function deleteModule() {
+      moduleStore.deleteModule();
+    }
 
     // 模块STORE数据
     const { pageActiveModule } = getModuleStoreData();
 
     return {
-      formList,
+      deleteModule,
       attrFormComMap,
       pageActiveModule,
     };

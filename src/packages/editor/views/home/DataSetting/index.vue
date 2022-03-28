@@ -14,6 +14,9 @@
       <el-tab-pane label="属性">
         <AttrSet />
       </el-tab-pane>
+      <el-tab-pane label="布局">
+        <LayoutSet />
+      </el-tab-pane>
       <el-tab-pane label="操作" v-if="pageActiveModule.key">
         <ModuleOperation />
       </el-tab-pane>
@@ -25,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AttrSet from "./components/AttrSet.vue";
+import LayoutSet from "./components/LayoutSet.vue";
 import ModuleOperation from "./components/ModuleOperation.vue";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 
@@ -32,6 +36,7 @@ export default defineComponent({
   name: "AttrSetting",
   components: {
     AttrSet,
+    LayoutSet,
     ModuleOperation,
   },
   setup() {

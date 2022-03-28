@@ -10,7 +10,7 @@
       <div
         v-for="page in pageList"
         :key="page.route"
-        :class="{ active: activePage === page.route }"
+        :class="{ active: activePageRoute === page.route }"
         class="page-item"
         @click="selectActivePage(page)"
       >
@@ -46,12 +46,12 @@ export default defineComponent({
     }
 
     // 模块STORE数据
-    const { pageList, activePage } = getModuleStoreData();
+    const { pageList, activePageRoute } = getModuleStoreData();
 
     return {
       pageList,
       addPage,
-      activePage,
+      activePageRoute,
       selectActivePage,
       addPageVisible,
     };

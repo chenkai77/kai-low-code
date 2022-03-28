@@ -6,27 +6,7 @@
 <template>
   <div class="center-box">
     <div class="editor-wrapper">
-      <Draggable
-        v-model="pageModuleList[activePageRoute]"
-        item-key="name"
-        :group="{ name: 'modules' }"
-        class="drag-wrapper"
-        :class="{ isDrag }"
-        ghostClass="ghost"
-        @Change="dragChange"
-        @start="isDrag = true"
-        @end="isDrag = false"
-      >
-        <template #item="{ element, index }">
-          <div
-            class="drag-item"
-            @click="moduleActive(element)"
-            :class="{ active: element.key === pageActiveModule.key }"
-          >
-            <ModuleRender :module-date="element"></ModuleRender>
-          </div>
-        </template>
-      </Draggable>
+      <ModuleDraggable v-model="pageModuleList[activePageRoute]" />
     </div>
   </div>
 </template>
@@ -44,41 +24,20 @@ import Draggable from "vuedraggable";
 import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
 import ModuleRender from "@src/components/common/ModuleRender.vue";
 import useModuleStore from "@editor/store/module";
-import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
+import ModuleDraggable from "@src/components/common/ModuleDraggable.vue";
+
 export default defineComponent({
   name: "home",
   components: {
-    ModuleDrag,
     Draggable,
+    ModuleDrag,
     ModuleRender,
+    ModuleDraggable,
   },
   setup() {
-    // 是否处于拖拽状态
-    const isDrag = ref(false);
     // moduleStore
     const moduleStore = useModuleStore();
-
-    /**
-     * @description: 拖动改变时
-     * @author: depp.chen
-     */
-    function dragChange(val: any) {
-      // 新增时
-      if (val.added) {
-        val.added.element.key = Symbol();
-        moduleStore.changePageActiveModule(val.added.element);
-      }
-    }
-
-    /**
-     * @description: 模块点击激活
-     * @author: depp.chen
-     * @param {  } element : 激活模块
-     */
-    function moduleActive(element: IModule) {
-      moduleStore.changePageActiveModule(element);
-    }
 
     /**
      * @description: 置空激活模块
@@ -108,9 +67,6 @@ export default defineComponent({
     const { activePageRoute, pageActiveModule } = getModuleStoreData();
 
     return {
-      isDrag,
-      dragChange,
-      moduleActive,
       activePageRoute,
       pageActiveModule,
       moduleActiveBlur,

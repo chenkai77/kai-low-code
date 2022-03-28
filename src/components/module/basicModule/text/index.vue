@@ -11,10 +11,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { attrFormTypeEnum } from "@src/enums/attrFormType";
+import { attrFormTypeEnum } from "@editor/enums/attrFormType";
 export default defineComponent({
   name: "text",
-  key: {
+  keyInfo: {
     label: "文本",
     icon: "icon-img",
   },

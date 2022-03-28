@@ -10,22 +10,10 @@
         <PageTab />
       </el-tab-pane>
       <el-tab-pane label="基础">
-        <Draggable
-          v-model="basicPartList"
-          item-key="name"
-          :sort="false"
-          :group="{ name: 'modules', pull: 'clone', put: false }"
-          class="basic-part-list"
-          :clone="dragClone"
-        >
-          <template #item="{ element }">
-            <DragItem
-              class="basic-part-item"
-              :label="element.label"
-              :icon="element.icon"
-            />
-          </template>
-        </Draggable>
+        <ModuleList :drag-list="basicPartList" />
+      </el-tab-pane>
+      <el-tab-pane label="布局">
+        <ModuleList :drag-list="containerPartList" />
       </el-tab-pane>
       <el-tab-pane label="图表">图表</el-tab-pane>
       <el-tab-pane label="业务">业务</el-tab-pane>
@@ -35,33 +23,22 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Draggable from "vuedraggable";
-import { basicPartList } from "@src/components/module";
-import DragItem from "./components/DragItem.vue";
-import PageTab from "./PageTab/index.vue";
-import { cloneLoop } from "@src/utils/cloneDeep";
-import { IModule } from "@src/types/module.d";
+import PageTab from "./pageTab/index.vue";
+import BasicModule from "./basicModule/index.vue";
+import ModuleList from "./components/ModuleList.vue";
+import { basicPartList, containerPartList } from "@src/components/module";
 
 export default defineComponent({
   name: "ModuleDrag",
   components: {
-    Draggable,
-    DragItem,
     PageTab,
+    ModuleList,
+    BasicModule,
   },
   setup() {
-    /**
-     * @description: 拖拽克隆
-     * @author: depp.chen
-     */
-    const dragClone = (val: IModule) => {
-      console.log("当前拖拽克隆的组件:", val);
-      return cloneLoop(val);
-    };
-
     return {
-      dragClone,
       basicPartList,
+      containerPartList,
     };
   },
 });
@@ -77,14 +54,5 @@ export default defineComponent({
   border-right: 1px solid #eee;
   background: #fff;
   padding: 8px;
-
-  .basic-part-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .basic-part-item {
-      width: 48%;
-    }
-  }
 }
 </style>

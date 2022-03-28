@@ -5,6 +5,8 @@
  */
 import { defineStore } from "pinia";
 import { IModule } from "@src/types/module.d";
+import { ElMessageBox, ElMessage } from "element-plus";
+import "element-plus/es/components/message-box/style/css";
 
 const useModuleStore = defineStore("module", {
   state: () => ({
@@ -52,6 +54,40 @@ const useModuleStore = defineStore("module", {
      */
     changePageActiveModule(module: IModule | {}) {
       this.pageActiveModule = module as IModule;
+    },
+
+    /**
+     * @description: 删除激活页面指定模块
+     * @author: depp.chen
+     */
+    deleteModule() {
+      if (!this.pageActiveModule.key) {
+        return;
+      }
+      ElMessageBox.confirm("确定删除该模块吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let list = this.allPageData[this.activePageRoute];
+          let targetIndex = list.findIndex(
+            (e: IModule) => e.key === this.pageActiveModule.key
+          );
+          if (targetIndex > -1) {
+            list.splice(targetIndex, 1);
+            ElMessage({
+              type: "success",
+              message: "删除成功",
+            });
+          }
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "已取消",
+          });
+        });
     },
   },
 });

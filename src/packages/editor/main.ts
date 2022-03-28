@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import "@src/styles/reset.scss";
+import "element-plus/es/components/message/style/css";
 import importVant from "@src/utils/importVant";
 
 const app = createApp(App);
