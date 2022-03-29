@@ -9,7 +9,12 @@ import {
   moduleListConversion,
 } from "@src/utils/moduleConversion";
 
-let moduleObj: Record<string, any> = moduleObjConversion(modules, "basic_");
+import { moduleTypeEnum } from "@src/enums/moduleType";
+
+let moduleObj: Record<string, any> = moduleObjConversion(
+  modules,
+  moduleTypeEnum.basic + "_"
+);
 
 // 基础模块列表
 export const basicPartList = moduleListConversion(moduleObj);

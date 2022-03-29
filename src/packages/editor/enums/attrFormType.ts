@@ -5,13 +5,16 @@
  */
 import { ElInput, ElInputNumber } from "element-plus";
 import NumInput from "@editor/components/attrSet/NumInput.vue";
+import ColumnProportion from "@editor/components/attrSet/ColumnProportion.vue";
 
 export enum attrFormTypeEnum {
-  input = "input",
-  inputNumber = "inputNumber",
+  Input = "Input",
+  NumInput = "NumInput",
+  ColumnProportion = "ColumnProportion",
 }
 
 export const attrFormComMap: Record<attrFormTypeEnum, any> = {
-  [attrFormTypeEnum.input]: ElInput,
-  [attrFormTypeEnum.inputNumber]: NumInput,
+  [attrFormTypeEnum.Input]: ElInput,
+  [attrFormTypeEnum.NumInput]: NumInput,
+  [attrFormTypeEnum.ColumnProportion]: ColumnProportion,
 };

@@ -6,8 +6,8 @@
 <template>
   <div class="module-render">
     <component
-      :is="moduleObj[moduleName]"
-      v-bind="moduleDate.propsValue"
+      :is="moduleObj[moduleDate.name]"
+      v-bind="{ ...moduleDate.propsValue, ...otherObj }"
     ></component>
   </div>
 </template>
@@ -15,6 +15,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import { moduleObj } from "@src/components/module";
+import { moduleTypeEnum } from "@src/enums/moduleType";
 
 export default defineComponent({
   name: "ModuleRender",
@@ -25,11 +26,18 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const moduleName = computed(() => props.moduleDate.name);
+    const otherObj = computed(() => {
+      if (props.moduleDate.name.indexOf(moduleTypeEnum.container) > -1) {
+        return {
+          moduleDate: props.moduleDate,
+        };
+      }
+      return {};
+    });
 
     return {
+      otherObj,
       moduleObj,
-      moduleName,
     };
   },
 });

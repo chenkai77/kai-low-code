@@ -14,14 +14,20 @@
     @Change="dragChange"
     @start="isDrag = true"
     @end="isDrag = false"
+    v-bind="{ ...$attrs }"
   >
     <template #item="{ element, index }">
       <div>
         <slot :element="element">
           <div
             class="drag-item"
-            @click="moduleActive(element)"
-            :class="{ active: element.key === pageActiveModule.key }"
+            @click.stop="moduleActive(element)"
+            :class="[
+              {
+                active: element.key === pageActiveModule.key,
+              },
+              calculateClassName(element.name),
+            ]"
           >
             <ModuleRender :module-date="element"></ModuleRender>
           </div>
@@ -47,6 +53,7 @@ import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 import { comVModelHook } from "@editor/hooks/componentVModel";
 import { dragHooks } from "@editor/hooks/dragHooks";
+import { moduleTypeEnum } from "@src/enums/moduleType";
 
 export default defineComponent({
   name: "ModuleDraggable",
@@ -64,7 +71,7 @@ export default defineComponent({
   setup(props, { emit }) {
     // 是否处于拖拽状态
     const isDrag = ref(false);
-
+    // 拖拽列表
     const dragList = comVModelHook(props, "modelValue", emit);
     // moduleStore
     const moduleStore = useModuleStore();
@@ -76,6 +83,16 @@ export default defineComponent({
      */
     function moduleActive(element: IModule) {
       moduleStore.changePageActiveModule(element);
+    }
+
+    /**
+     * @description: 计算类名
+     * @author: depp.chen
+     */
+    function calculateClassName(name: string) {
+      if (name.indexOf(moduleTypeEnum.container) > -1) {
+        return "dashed-line";
+      }
     }
 
     // 模块STORE数据
@@ -90,6 +107,7 @@ export default defineComponent({
       moduleActive,
       activePageRoute,
       pageActiveModule,
+      calculateClassName,
       pageModuleList: moduleStore.allPageData,
     };
   },
@@ -117,6 +135,9 @@ export default defineComponent({
       .drag-item {
         &.active {
           border: 1px solid $color-primary;
+          &.dashed-line {
+            border-style: dashed;
+          }
         }
       }
     }

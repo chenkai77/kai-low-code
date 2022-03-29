@@ -9,7 +9,12 @@ import {
   moduleListConversion,
 } from "@src/utils/moduleConversion";
 
-let moduleObj: Record<string, any> = moduleObjConversion(modules, "container_");
+import { moduleTypeEnum } from "@src/enums/moduleType";
+
+let moduleObj: Record<string, any> = moduleObjConversion(
+  modules,
+  moduleTypeEnum.container + "_"
+);
 
 // 容器模块列表
 export const containerPartList = moduleListConversion(moduleObj);

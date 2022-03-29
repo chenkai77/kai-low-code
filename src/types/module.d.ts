@@ -20,7 +20,7 @@ export interface IModule {
   name: string;
   label: string;
   icon: string;
-  key: string;
+  key: Symbol;
   propsValue: Record<string, any>;
 }
 
@@ -29,4 +29,10 @@ export interface ILateralContainerColList {
   id: string;
   span: number;
   moduleList: IModule[];
+}
+
+// 页面模块
+export interface IPageData {
+  modules: IModule[];
+  [key: string]: any;
 }

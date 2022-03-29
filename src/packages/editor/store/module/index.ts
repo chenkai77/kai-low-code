@@ -4,7 +4,7 @@
  * @Description: 模块store
  */
 import { defineStore } from "pinia";
-import { IModule } from "@src/types/module.d";
+import { IModule, IPageData } from "@src/types/module.d";
 import { ElMessageBox, ElMessage } from "element-plus";
 import "element-plus/es/components/message-box/style/css";
 
@@ -16,8 +16,8 @@ const useModuleStore = defineStore("module", {
     activePageRoute: "/",
     // 所有页面的模块数据
     allPageData: {
-      "/": [],
-    } as Record<string, any>,
+      "/": { modules: [] },
+    } as Record<string, IPageData>,
     // 当前激活页面的激活模块
     pageActiveModule: {} as IModule,
   }),
@@ -29,7 +29,7 @@ const useModuleStore = defineStore("module", {
      */
     addPage(page: IPage) {
       this.pageList.push(page);
-      this.allPageData[page.label] = [];
+      this.allPageData[page.label] = { modules: [] };
     },
 
     /**
@@ -38,14 +38,6 @@ const useModuleStore = defineStore("module", {
      */
     changeActivePageRoute(pageRoute: string) {
       this.activePageRoute = pageRoute;
-    },
-
-    /**
-     * @description: 获取页面激活模块
-     * @author: depp.chen
-     */
-    getPageActiveModule(index: number) {
-      return this.allPageData[this.activePageRoute][index];
     },
 
     /**
@@ -70,7 +62,7 @@ const useModuleStore = defineStore("module", {
         type: "warning",
       })
         .then(() => {
-          let list = this.allPageData[this.activePageRoute];
+          let list = this.allPageData[this.activePageRoute].modules;
           let targetIndex = list.findIndex(
             (e: IModule) => e.key === this.pageActiveModule.key
           );

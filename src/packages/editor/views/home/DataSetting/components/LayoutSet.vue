@@ -44,7 +44,7 @@ export default defineComponent({
      * @author: depp.chen
      */
     function addContainer() {
-      let list = moduleStore.allPageData[moduleStore.activePageRoute];
+      let list = moduleStore.allPageData[moduleStore.activePageRoute].modules;
       let targetIndex = list.findIndex(
         (e: IModule) => e.key === pageActiveModule.value.key
       );

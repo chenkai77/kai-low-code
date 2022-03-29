@@ -1,18 +1,19 @@
 <template>
   <div class="attr-set">
     <div v-if="pageActiveModule && pageActiveModule.props">
-      <el-form>
-        <el-form-item
-          :label="item.label"
-          v-for="item in formList"
-          :key="item.propsKey"
-        >
-          <component
-            :is="attrFormComMap[item.formType]"
-            v-model="pageActiveModule.propsValue[item.propsKey]"
-          ></component>
-        </el-form-item>
-      </el-form>
+      <div class="form-wrapper">
+        <div class="form-item" v-for="item in formList" :key="item.propsKey">
+          <div class="form-label">
+            {{ item.label + " ：" }}
+          </div>
+          <div class="form-editor">
+            <component
+              :is="attrFormComMap[item.formType]"
+              v-model="pageActiveModule.propsValue[item.propsKey]"
+            ></component>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +37,9 @@ export default defineComponent({
       () => {
         if (moduleStore.pageActiveModule.props) {
           let propsData = moduleStore.pageActiveModule.props;
-          formList.value = Object.keys(propsData).map((e) => propsData[e]);
+          formList.value = Object.keys(propsData)
+            .map((e) => propsData[e])
+            .filter((e) => e.label);
         } else {
           formList.value = [];
         }
@@ -60,5 +63,20 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .attr-set {
+  .form-wrapper {
+    .form-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+      .form-label {
+        flex-shrink: 0;
+        height: 40px;
+        line-height: 40px;
+      }
+      .form-editor {
+      }
+    }
+  }
 }
 </style>

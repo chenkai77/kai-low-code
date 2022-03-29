@@ -1,7 +1,7 @@
 <!--
  * @Author: depp.chen
  * @Date: 2022-03-28 17:21:45
- * @Description: 
+ * @Description: 数字输入框
 -->
 <template>
   <el-input-number

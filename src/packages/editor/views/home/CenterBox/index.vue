@@ -6,7 +6,7 @@
 <template>
   <div class="center-box">
     <div class="editor-wrapper">
-      <ModuleDraggable v-model="pageModuleList[activePageRoute]" />
+      <ModuleDraggable v-model="pageModuleList[activePageRoute].modules" />
     </div>
   </div>
 </template>

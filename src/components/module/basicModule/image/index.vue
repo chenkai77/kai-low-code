@@ -22,13 +22,13 @@ export default defineComponent({
     src: {
       type: String,
       default: "https://chenkai.xyz/xkg/images/banner3.png",
-      formType: attrFormTypeEnum.input,
+      formType: attrFormTypeEnum.Input,
       label: "图片地址",
     },
     width: {
       type: Number,
       default: 50,
-      formType: attrFormTypeEnum.inputNumber,
+      formType: attrFormTypeEnum.NumInput,
       label: "宽度",
     },
   },

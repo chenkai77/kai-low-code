@@ -24,8 +24,12 @@ export function moduleListConversion(moduleObj: Record<string, any>) {
   return Object.keys(moduleObj).map((e) => {
     let propsValue: Record<string, any> = {};
     Object.keys(moduleObj[e].props).forEach((key) => {
-      // moduleObj[e].props[key].formValue = moduleObj[e].props[key].default;
-      propsValue[key] = moduleObj[e].props[key].default;
+      let defaultValue = moduleObj[e].props[key].default;
+      defaultValue =
+        Object.prototype.toString.call(defaultValue) === "[object Function]"
+          ? defaultValue()
+          : defaultValue;
+      propsValue[key] = defaultValue;
       moduleObj[e].props[key].propsKey = key;
     });
     return {
