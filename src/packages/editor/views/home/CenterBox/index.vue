@@ -4,35 +4,41 @@
  * @Description: 中间内容区域
 -->
 <template>
-  <div class="center-box">
+  <div class="center-box" @click="moduleActiveBlur">
     <div class="editor-wrapper">
-      <ModuleDraggable v-model="pageModuleList[activePageRoute].modules" />
+      <ModuleDraggable v-model="pageModuleList[activePageRoute].modules">
+        <template #item="item">
+          <div
+            class="drag-item"
+            @click.stop="moduleActive(element)"
+            :class="[
+              {
+                active: element.key === pageActiveModule.key,
+              },
+              calculateClassName(element.name),
+            ]"
+          >
+            <ModuleRender :module-date="element"></ModuleRender>
+          </div>
+        </template>
+      </ModuleDraggable>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-} from "vue";
+import { defineComponent } from "vue";
 import Draggable from "vuedraggable";
 import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
-import ModuleRender from "@src/components/common/ModuleRender.vue";
 import useModuleStore from "@editor/store/module";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
-import ModuleDraggable from "@src/components/common/ModuleDraggable.vue";
+import ModuleDraggable from "@editor/components/drag/ModuleDraggable.vue";
 
 export default defineComponent({
   name: "home",
   components: {
     Draggable,
     ModuleDrag,
-    ModuleRender,
     ModuleDraggable,
   },
   setup() {
@@ -43,25 +49,12 @@ export default defineComponent({
      * @description: 置空激活模块
      * @author: depp.chen
      */
-    function moduleActiveBlur(e: Record<string, any>) {
+    function moduleActiveBlur(e: any) {
       let target = document.querySelector(".center-box .editor-wrapper");
-      let setEl = document.querySelector(".data-setting");
-      if (e.path.indexOf(target) <= -1 && e.path.indexOf(setEl) <= -1) {
+      if (e.path.indexOf(target) <= -1) {
         moduleStore.changePageActiveModule({});
       }
     }
-
-    function documentClickListener() {
-      document.addEventListener("click", moduleActiveBlur);
-    }
-
-    onMounted(() => {
-      documentClickListener();
-    });
-
-    onUnmounted(() => {
-      document.removeEventListener("click", moduleActiveBlur);
-    });
 
     // 模块STORE数据
     const { activePageRoute, pageActiveModule } = getModuleStoreData();

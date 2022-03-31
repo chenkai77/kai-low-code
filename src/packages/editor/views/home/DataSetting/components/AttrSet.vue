@@ -4,12 +4,13 @@
       <div class="form-wrapper">
         <div class="form-item" v-for="item in formList" :key="item.propsKey">
           <div class="form-label">
-            {{ item.label + " ：" }}
+            {{ item.label }}
           </div>
           <div class="form-editor">
             <component
               :is="attrFormComMap[item.formType]"
               v-model="pageActiveModule.propsValue[item.propsKey]"
+              v-bind="item.setComponentProps"
             ></component>
           </div>
         </div>
@@ -21,7 +22,7 @@
 <script lang="ts">
 import { computed, defineComponent, watch, ref } from "vue";
 import useModuleStore from "@editor/store/module";
-import { attrFormComMap, attrFormTypeEnum } from "@editor/enums/attrFormType";
+import { attrFormComMap, attrFormTypeEnum } from "@src/enums/attrFormType";
 import { IModule, IProps } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 
@@ -39,7 +40,9 @@ export default defineComponent({
           let propsData = moduleStore.pageActiveModule.props;
           formList.value = Object.keys(propsData)
             .map((e) => propsData[e])
-            .filter((e) => e.label);
+            .filter((e) => e.label)
+            .sort((a, b) => a.sort - b.sort);
+          console.log(formList.value);
         } else {
           formList.value = [];
         }
@@ -73,8 +76,10 @@ export default defineComponent({
         flex-shrink: 0;
         height: 40px;
         line-height: 40px;
+        width: 120px;
       }
       .form-editor {
+        flex: 1;
       }
     }
   }

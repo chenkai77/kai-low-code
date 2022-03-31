@@ -15,30 +15,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Draggable from 'vuedraggable';
-import ModuleDrag from '@editor/views/home/ModuleDrag/index.vue'
-import DataSetting from '@editor/views/home/DataSetting/index.vue'
-import CenterBox from '@editor/views/home/CenterBox/index.vue';
-import TopHeader from '@editor/views/home/TopHeader/index.vue';
-import ModuleRender from '@src/components/common/ModuleRender.vue';
+import { defineComponent, ref } from "vue";
+import Draggable from "vuedraggable";
+import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
+import DataSetting from "@editor/views/home/DataSetting/index.vue";
+import CenterBox from "@editor/views/home/CenterBox/index.vue";
+import TopHeader from "@editor/views/home/TopHeader/index.vue";
 
 export default defineComponent({
-  name: 'home',
+  name: "home",
   components: {
     ModuleDrag,
     Draggable,
     DataSetting,
-    ModuleRender,
     CenterBox,
-    TopHeader
+    TopHeader,
   },
-  setup() {
-
-  }
-})
+  setup() {},
+});
 </script>
-
 
 <style scoped lang="scss">
 .home-wrapper {

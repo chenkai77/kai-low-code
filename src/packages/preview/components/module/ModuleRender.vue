@@ -8,13 +8,14 @@
     <component
       :is="moduleObj[moduleDate.name]"
       v-bind="{ ...moduleDate.propsValue, ...otherObj }"
-    ></component>
+    >
+    </component>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
-import { moduleObj } from "@src/components/module";
+import { moduleObj } from "@preview/utils/moduleImport";
 import { moduleTypeEnum } from "@src/enums/moduleType";
 
 export default defineComponent({

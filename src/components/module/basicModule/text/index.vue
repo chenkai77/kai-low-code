@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { attrFormTypeEnum } from "@editor/enums/attrFormType";
+import { attrFormTypeEnum } from "@src/enums/attrFormType";
 export default defineComponent({
   name: "text",
   keyInfo: {
@@ -22,20 +22,23 @@ export default defineComponent({
     color: {
       type: String,
       label: "颜色",
-      default: "默认颜色",
-      formType: attrFormTypeEnum.Input,
+      default: "#333333",
+      formType: attrFormTypeEnum.ColorPicker,
+      sort: 3,
     },
     fontSize: {
-      type: String,
+      type: Number,
       label: "文字大小",
-      default: "14",
-      formType: attrFormTypeEnum.Input,
+      default: 14,
+      formType: attrFormTypeEnum.NumInput,
+      sort: 2,
     },
     text: {
       type: String,
       label: "文字",
       default: "默认文本",
       formType: attrFormTypeEnum.Input,
+      sort: 1,
     },
   },
   setup() {

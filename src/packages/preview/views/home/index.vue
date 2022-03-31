@@ -5,31 +5,41 @@
 -->
 <template>
   <div class="home-wrapper">
-    888
-    <div v-for="element in configJson" :key="element.name">
+    <div v-for="element in moduleList" :key="element.key">
       <ModuleRender :module-date="element"></ModuleRender>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import ModuleRender from '@src/components/common/ModuleRender.vue';
+import { defineComponent, onMounted, ref } from "vue";
+import ModuleRender from "@preview/components/module/ModuleRender.vue";
+import { IModule } from "@src/types/module.d";
+import { allJsonKey } from "@src/enums/cookieKey";
 
 export default defineComponent({
-  name: 'home',
+  name: "home",
   components: {
-    ModuleRender
+    ModuleRender,
   },
   setup() {
-    const configJson = []
-    return {
-      configJson,
-    }
-  }
-})
-</script>
+    const moduleList = ref<IModule[]>([]);
 
+    onMounted(() => {
+      let allData = localStorage.getItem(allJsonKey);
+      if (allData) {
+        let data = JSON.parse(allData);
+        moduleList.value = data["/"].modules;
+      }
+      console.log(moduleList.value);
+    });
+
+    return {
+      moduleList,
+    };
+  },
+});
+</script>
 
 <style scoped lang="scss">
 .home-wrapper {

@@ -2,10 +2,8 @@
 // We suggest you to commit this file into source control
 // Read more: https://github.com/vuejs/vue-next/pull/3399
 
-declare module 'vue' {
-  export interface GlobalComponents {
-    ModuleRender: typeof import('./src/components/common/ModuleRender.vue')['default']
-  }
+declare module "vue" {
+  export interface GlobalComponents {}
 }
 
-export { }
+export {};

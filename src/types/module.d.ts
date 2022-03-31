@@ -4,13 +4,14 @@
  * @Description: 模块类型
  */
 
-import { attrFormTypeEnum } from "@editor/enums/attrFormType";
+import { attrFormTypeEnum } from "@src/enums/attrFormType";
 
 // 模块 props 类型
 export interface IProps {
   formType: attrFormTypeEnum;
   propsKey: string;
   label: string;
+  sort: number;
   [key: string]: any;
 }
 
@@ -20,15 +21,15 @@ export interface IModule {
   name: string;
   label: string;
   icon: string;
-  key: Symbol;
+  key: symbol;
   propsValue: Record<string, any>;
 }
 
 // 容器组件props colList 属性类型
 export interface ILateralContainerColList {
-  id: string;
-  span: number;
   moduleList: IModule[];
+  value: number[];
+  isBlank?: boolean;
 }
 
 // 页面模块

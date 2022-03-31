@@ -7,6 +7,7 @@ import { defineStore } from "pinia";
 import { IModule, IPageData } from "@src/types/module.d";
 import { ElMessageBox, ElMessage } from "element-plus";
 import "element-plus/es/components/message-box/style/css";
+import "element-plus/es/components/switch/style/css";
 
 const useModuleStore = defineStore("module", {
   state: () => ({
@@ -68,6 +69,7 @@ const useModuleStore = defineStore("module", {
           );
           if (targetIndex > -1) {
             list.splice(targetIndex, 1);
+            this.changePageActiveModule({});
             ElMessage({
               type: "success",
               message: "删除成功",

@@ -12,7 +12,7 @@
 <script lang="ts">
 import { computed, defineComponent, watch, ref } from "vue";
 import useModuleStore from "@editor/store/module";
-import { attrFormComMap, attrFormTypeEnum } from "@editor/enums/attrFormType";
+import { attrFormComMap, attrFormTypeEnum } from "@src/enums/attrFormType";
 import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
 

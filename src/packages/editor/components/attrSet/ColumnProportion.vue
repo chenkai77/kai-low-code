@@ -4,185 +4,105 @@
  * @Description: 列比例
 -->
 <template>
-  <div
-    :draggable="false"
-    ref="columnProportionRef"
-    class="column-proportion"
-    @mousedown="selectStart($event)"
-  >
+  <div class="column-proportion">
+    <div class="square-list">
+      <div
+        v-for="(item, i) in squareList"
+        class="square-item"
+        :key="item.id"
+        :class="{
+          active: item.active,
+        }"
+        @click="selectStart(i)"
+        @mousemove="selectMove(i)"
+      >
+        <i v-if="!item.active" class="iconfont icon-tianjia"></i>
+      </div>
+    </div>
     <div
-      v-for="(item, i) in squareList"
-      class="square-item"
-      :class="{
-        active: item.active,
-        select: selectIndexList.indexOf(i) > -1,
-        'start-active': !squareList[i - 1] || !squareList[i - 1].active,
-        'end-active': !squareList[i + 1] || !squareList[i + 1].active,
-      }"
-      @click="squareClick(item)"
-    ></div>
-    <div class="select-area" ref="selectAreaRef" :style="selectAreaStyle"></div>
+      v-for="(item, i) in modelValue"
+      :key="item.value[0]"
+      class="select-item"
+      :style="calculateStyle(item.value)"
+    >
+      {{ item.value[1] - item.value[0] + 1 }}
+      <i class="iconfont icon-shanchu" @click="selectDelete(i)"></i>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  nextTick,
-} from "vue";
+import { defineComponent, ref, watch, PropType } from "vue";
 import { throttle } from "@src/utils/throttleDebounce";
+import { ILateralContainerColList } from "@src/types/module.d";
 
 export default defineComponent({
   name: "ColumnProportion",
   props: {
     modelValue: {
-      type: Array,
+      type: Array as PropType<ILateralContainerColList[]>,
       default: [],
     },
   },
   emits: ["update:modelValue"],
-  setup() {
-    // 外层元素
-    const columnProportionRef = ref();
-    // 选择框元素
-    const selectAreaRef = ref();
+  setup(props, { emit }) {
     // 选择区块
     const squareList = ref([
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
-      { active: false },
+      { id: "1", active: false },
+      { id: "2", active: false },
+      { id: "3", active: false },
+      { id: "4", active: false },
+      { id: "5", active: false },
+      { id: "6", active: false },
+      { id: "7", active: false },
+      { id: "8", active: false },
+      { id: "9", active: false },
+      { id: "10", active: false },
+      { id: "11", active: false },
+      { id: "12", active: false },
     ]);
     // 选择的序号列表
-    const selectIndexList = ref<number[]>([]);
+    // const selectList = comVModelHook(props, "modelValue", emit);
+    // 开始选择的索引
+    const startIndex = ref(-1);
 
-    // 是否开始选择
-    const selectIsStart = ref(false);
-
-    // 鼠标按下后确定的初始值
-    const initialCoordinates = ref({
-      initialPositionX: 0,
-      initialPositionY: 0,
-      initialPageX: 0,
-      initialPageY: 0,
-      selectMaxWidth: 0,
-      selectMaxHeight: 0,
-    });
-
-    // 选择框类型
-    const selectAreaStyle = ref({
-      top: "auto",
-      left: "auto",
-      right: "auto",
-      bottom: "auto",
-      width: "0",
-      height: "0",
-    });
+    /**
+     * @description: 方块点击
+     * @author: depp.chen
+     */
+    function squareClick(item: { active: boolean }) {
+      item.active = !item.active;
+    }
 
     /**
      * @description: 鼠标按下，开始选择事件
      * @author: depp.chen
      */
-    function selectStart(e: MouseEvent) {
-      selectIsStart.value = true;
-      initialCoordinates.value.initialPositionX = e.offsetX;
-      initialCoordinates.value.initialPositionY = e.offsetY;
-      initialCoordinates.value.initialPageX = e.pageX;
-      initialCoordinates.value.initialPageY = e.pageY;
-      initialCoordinates.value.selectMaxWidth = e.pageY;
-      initialCoordinates.value.selectMaxHeight = e.pageY;
-    }
-
-    function squareIncludedCalculate() {
-      let squareList = document.querySelectorAll(
-        ".column-proportion .square-item"
-      );
-      let top = selectAreaRef.value.offsetTop;
-      let left = selectAreaRef.value.offsetLeft;
-      let width = selectAreaRef.value.offsetWidth;
-      let height = selectAreaRef.value.offsetHeight;
-      let arr: number[] = [];
-      (squareList as unknown as HTMLDivElement[]).forEach(
-        (e: HTMLDivElement, i) => {
-          let squareTop = e.offsetTop;
-          let squareLeft = e.offsetLeft;
-          let squareWidth = e.offsetWidth;
-          let squareHeight = e.offsetHeight;
-          if (
-            squareTop > top &&
-            squareLeft > left &&
-            squareLeft + squareWidth < left + width &&
-            squareTop + squareHeight < top + height
-          ) {
-            arr.push(i);
-          }
-        }
-      );
-      selectIndexList.value = arr;
+    function selectStart(index: number) {
+      if (startIndex.value !== -1) {
+        let arr = [startIndex.value, index].sort((a, b) => a - b);
+        props.modelValue.push({ moduleList: [], value: arr });
+        startIndex.value = -1;
+        squareList.value.forEach((e) => {
+          e.active = false;
+        });
+        return;
+      }
+      startIndex.value = index;
     }
 
     /**
      * @description: 选择开始后，鼠标移动事件，用于节流函数参数
      * @author: depp.chen
      */
-    function throttleSelectFn(e: any) {
-      // 防止突然隐藏
-      if (!columnProportionRef.value.offsetWidth) {
-        selectCancel();
-      }
-      let maxWidth = 0;
-      let maxHeight = 0;
-      if (e.pageX > initialCoordinates.value.initialPageX) {
-        selectAreaStyle.value.left =
-          initialCoordinates.value.initialPositionX + "px";
-        selectAreaStyle.value.right = "auto";
-        maxWidth =
-          columnProportionRef.value.offsetWidth -
-          initialCoordinates.value.initialPositionX;
-      } else {
-        selectAreaStyle.value.right =
-          columnProportionRef.value.offsetWidth -
-          initialCoordinates.value.initialPositionX +
-          "px";
-        selectAreaStyle.value.left = "auto";
-        maxWidth = initialCoordinates.value.initialPositionX;
-      }
-      if (e.pageY > initialCoordinates.value.initialPageY) {
-        selectAreaStyle.value.top =
-          initialCoordinates.value.initialPositionY + "px";
-        selectAreaStyle.value.bottom = "auto";
-        maxHeight =
-          columnProportionRef.value.offsetHeight -
-          initialCoordinates.value.initialPositionY;
-      } else {
-        selectAreaStyle.value.bottom =
-          columnProportionRef.value.offsetHeight -
-          initialCoordinates.value.initialPositionY +
-          "px";
-        selectAreaStyle.value.top = "auto";
-        maxHeight = initialCoordinates.value.initialPositionY;
-      }
-      let width = Math.abs(e.pageX - initialCoordinates.value.initialPageX);
-      let height = Math.abs(e.pageY - initialCoordinates.value.initialPageY);
-      selectAreaStyle.value.width =
-        (width > maxWidth ? maxWidth : width) + "px";
-      selectAreaStyle.value.height =
-        (height > maxHeight ? maxHeight : height) + "px";
-      nextTick(() => {
-        squareIncludedCalculate();
+    function throttleSelectFn(index: number) {
+      let interval: number[] = [startIndex.value, index].sort((a, b) => a - b);
+      squareList.value.forEach((e, i) => {
+        if (i >= interval[0] && i <= interval[1]) {
+          e.active = true;
+        } else {
+          e.active = false;
+        }
       });
     }
 
@@ -193,61 +113,39 @@ export default defineComponent({
      * @description: 选择开始后，鼠标移动事件
      * @author: depp.chen
      */
-    function selectMove(e: any) {
-      if (selectIsStart.value) {
-        throttleSelectMove(e);
+    function selectMove(index: number) {
+      if (startIndex.value !== -1) {
+        throttleSelectMove(index);
       }
     }
 
     /**
-     * @description: 方块点击
+     * @description: 删除选择
      * @author: depp.chen
      */
-    function squareClick(item: { active: boolean }) {
-      item.active = !item.active;
+    function selectDelete(i: number) {
+      props.modelValue.splice(i, 1);
     }
 
-    onMounted(() => {
-      document.addEventListener("mousemove", selectMove);
-      document.addEventListener("mouseup", selectCancel);
-    });
-
-    onUnmounted(() => {
-      document.removeEventListener("mousemove", selectMove);
-      document.addEventListener("mouseup", selectCancel);
-    });
-
     /**
-     * @description: 选择取消
+     * @description: 样式计算
      * @author: depp.chen
      */
-    function selectCancel() {
-      if (selectIsStart.value) {
-        selectIsStart.value = false;
-        selectIndexList.value.forEach((e) => {
-          squareList.value[e].active = true;
-        });
-        selectIndexList.value = [];
-        selectAreaStyle.value.top = "auto";
-        selectAreaStyle.value.left = "auto";
-        selectAreaStyle.value.right = "auto";
-        selectAreaStyle.value.bottom = "auto";
-        selectAreaStyle.value.width = "0";
-        selectAreaStyle.value.height = "0";
-      }
+    function calculateStyle(item: number[]) {
+      return {
+        left: 30 * item[0] + "px",
+        width: 30 * (item[1] - item[0] + 1) + "px",
+      };
     }
 
     return {
-      selectIsStart,
-      selectCancel,
       squareList,
-      selectStart,
-      squareClick,
+      // selectList,
       selectMove,
-      selectAreaRef,
-      columnProportionRef,
-      selectAreaStyle,
-      selectIndexList,
+      selectStart,
+      selectDelete,
+      squareClick,
+      calculateStyle,
     };
   },
 });
@@ -256,12 +154,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .column-proportion {
   width: 357px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  border: 1px solid #999;
-  border-radius: 4px;
   position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -269,40 +161,58 @@ export default defineComponent({
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  &:hover {
-    border-color: $color-primary;
+  .square-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
   }
   .square-item {
-    width: 14px;
-    height: 14px;
-    border: 1px solid #666;
-    margin-right: 6px;
-    &.active {
-      border-color: $color-primary;
-      border-right: none;
-      border-left: none;
-      width: 20px;
-      margin-right: 0;
-      &.start-active {
-        border-left: 1px solid $color-primary;
-      }
-      &.end-active {
-        border-right: 1px solid $color-primary;
-        width: 14px;
-        margin-right: 6px;
-      }
-    }
-    &.select {
-      background: $bg-primary-shallow;
-      border-color: $color-primary;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #e5e5e5;
+    cursor: pointer;
+    line-height: 30px;
+    text-align: center;
+    background: #f8f8f8;
+    border-right: none;
+    .icon-tianjia {
+      font-size: 12px;
+      color: #999;
     }
     &:nth-last-child(1) {
-      margin-right: 0;
+      border-right: 1px solid #e5e5e5;
+    }
+    &.active {
+      background: rgba(0, 205, 150, 0.7);
     }
   }
-  .select-area {
+  .select-item {
     position: absolute;
-    background: $bg-primary-shallow;
+    top: 0;
+    height: 30px;
+    border: 1px solid $color-primary;
+    background: rgba(182, 233, 219);
+    color: $color-primary;
+    text-align: center;
+    line-height: 30px;
+    &:hover {
+      .icon-shanchu {
+        display: block;
+        z-index: 2;
+      }
+    }
+    .icon-shanchu {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -100%);
+      height: 16px;
+      background: #fff;
+      cursor: pointer;
+      color: $color-danger;
+      display: none;
+    }
   }
 }
 </style>

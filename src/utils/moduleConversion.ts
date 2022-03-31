@@ -12,6 +12,7 @@ export function moduleObjConversion(
     const name = prefix + modules[key].default.name;
     moduleObj[name] = { ...modules[key].default, name };
   });
+  console.log(moduleObj);
   return moduleObj;
 }
 

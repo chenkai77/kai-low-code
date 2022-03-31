@@ -26,7 +26,7 @@ import { defineComponent } from "vue";
 import PageTab from "./pageTab/index.vue";
 import BasicModule from "./basicModule/index.vue";
 import ModuleList from "./components/ModuleList.vue";
-import { basicPartList, containerPartList } from "@src/components/module";
+import { basicPartList, containerPartList } from "@editor/utils/moduleImport";
 
 export default defineComponent({
   name: "ModuleDrag",

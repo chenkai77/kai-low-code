@@ -1,7 +1,7 @@
 <!--
  * @Author: depp.chen
- * @Date: 2022-03-31 14:18:16
- * @Description: 横向布局容器组件
+ * @Date: 2022-03-25 17:16:31
+ * @Description: 容器组件
 -->
 <template>
   <van-row
@@ -21,7 +21,6 @@
         v-model="item.moduleList"
         :data-placeholder="'拖拽组件到此处'"
       ></ModuleDraggable>
-      <!-- <slot :slotData="item"></slot> -->
     </van-col>
   </van-row>
 </template>
@@ -30,6 +29,7 @@
 import { defineComponent, ref, PropType, computed, inject } from "vue";
 import { ILateralContainerColList } from "@src/types/module.d";
 import ModuleDraggable from "@editor/components/drag/ModuleDraggable.vue";
+import { getModuleStoreData } from "@editor/hooks/moduleStore";
 import { attrFormTypeEnum } from "@src/enums/attrFormType";
 
 export default defineComponent({
@@ -73,6 +73,15 @@ export default defineComponent({
       return !target;
     });
 
+    // // 是否当前激活模块
+    // const isActive = computed(() => {
+    //   if (props.moduleDate) {
+    //     return pageActiveModule.value.key === props.moduleDate.key;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+
     // 是否编辑模式当前激活模块
     const isActive = inject("isActive", false);
 
@@ -113,6 +122,9 @@ export default defineComponent({
       list = list.sort((a, b) => a.value[0] - b.value[0]);
       return list;
     });
+
+    // 模块STORE数据
+    const { pageActiveModule } = getModuleStoreData();
 
     return {
       isEmpty,
