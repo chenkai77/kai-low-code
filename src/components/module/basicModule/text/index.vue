@@ -4,7 +4,10 @@
  * @Description: 文本组件
 -->
 <template>
-  <div class="text-component" :style="{ fontSize: fontSize + 'px' }">
+  <div
+    class="text-component"
+    :style="{ fontSize: fontSize + 'px', color: color }"
+  >
     {{ text }}
   </div>
 </template>

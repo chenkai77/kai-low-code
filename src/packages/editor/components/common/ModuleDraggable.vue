@@ -16,9 +16,22 @@
     @end="isDrag = false"
     v-bind="{ ...$attrs }"
   >
-    <template #item="item">
+    <template #item="{ element, index }">
       <div>
-        <slot :item="item"> </slot>
+        <slot :element="element">
+          <div
+            class="drag-item"
+            @click.stop="moduleActive(element)"
+            :class="[
+              {
+                active: element.key === pageActiveModule.key,
+              },
+              calculateClassName(element.name),
+            ]"
+          >
+            <ModuleRender :module-date="element"></ModuleRender>
+          </div>
+        </slot>
       </div>
     </template>
   </Draggable>
@@ -27,7 +40,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Draggable from "vuedraggable";
-import ModuleRender from "@editor/components/module/ModuleRender.vue";
+import ModuleRender from "@editor/components/common/ModuleRender.vue";
 import useModuleStore from "@editor/store/module";
 import { IModule } from "@src/types/module.d";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";

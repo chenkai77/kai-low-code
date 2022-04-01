@@ -76,7 +76,7 @@ export default defineComponent({
         flex-shrink: 0;
         height: 40px;
         line-height: 40px;
-        width: 120px;
+        margin-right: 24px;
       }
       .form-editor {
         flex: 1;

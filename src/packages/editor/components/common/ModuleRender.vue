@@ -9,14 +9,6 @@
       :is="moduleObj[moduleDate.name]"
       v-bind="{ ...moduleDate.propsValue, ...otherObj }"
     >
-      <template #slotData="item">
-        <ModuleDraggable
-          v-if="item.moduleList"
-          :class="{ 'module-is-empty': !item.moduleList.length }"
-          v-model="item.moduleList"
-          :data-placeholder="'拖拽组件到此处'"
-        ></ModuleDraggable>
-      </template>
     </component>
   </div>
 </template>

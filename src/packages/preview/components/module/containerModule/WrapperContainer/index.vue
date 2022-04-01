@@ -20,10 +20,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, computed } from "vue";
-import { ILateralContainerColList } from "@src/types/module.d";
-import { attrFormTypeEnum } from "@src/enums/attrFormType";
 import ModuleRender from "@preview/components/module/ModuleRender.vue";
-import { wrapperContainerSetup } from "@src/components/module/containerModule/WrapperContainer/setup";
+import {
+  wrapperContainerSetup,
+  wrapperContainerProps,
+} from "@src/components/module/containerModule/WrapperContainer/wrapperContainer";
 
 export default defineComponent({
   name: "WrapperContainer",
@@ -31,26 +32,13 @@ export default defineComponent({
     ModuleRender,
   },
   props: {
-    colList: {
-      type: Array as PropType<ILateralContainerColList[]>,
-      default: () => [
-        { moduleList: [], value: [0, 5] },
-        { moduleList: [], value: [6, 11] },
-      ],
-      label: "12栅格列比例",
-      formType: attrFormTypeEnum.ColumnProportion,
-      sort: 1,
-    },
-    moduleDate: {
-      type: Object,
-      default: () => {},
-    },
+    ...wrapperContainerProps,
   },
   setup(props) {
-    const { colListConversion } = wrapperContainerSetup(props);
+    const wrapperContainerCommonData = wrapperContainerSetup(props);
 
     return {
-      colListConversion,
+      ...wrapperContainerCommonData,
     };
   },
 });
@@ -58,31 +46,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .wrapper-container {
-  padding: 4px;
-  &.border-active {
-    border: 1px dashed $color-primary;
-  }
   .container-col {
-    &.module-active {
-      border-right: 1px dashed $color-primary;
-      &:nth-last-child(1) {
-        border-right: none;
-      }
-    }
-    .module-is-empty {
-      position: relative;
-      &::after {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        content: attr(data-placeholder);
-        width: 50px;
-        text-align: center;
-        transform: translate(-50%, -50%);
-        font-size: 12px;
-        color: #999;
-      }
-    }
+    min-height: 0px;
   }
 }
 </style>

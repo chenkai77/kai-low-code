@@ -6,22 +6,24 @@
 <template>
   <div class="home-wrapper">
     <div v-for="element in moduleList" :key="element.key">
-      <ModuleRender :module-date="element"></ModuleRender>
+      <component
+        :is="moduleObj[element.name]"
+        v-bind="{ ...element.propsValue }"
+      >
+      </component>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import ModuleRender from "@preview/components/module/ModuleRender.vue";
 import { IModule } from "@src/types/module.d";
 import { allJsonKey } from "@src/enums/cookieKey";
+import { moduleObj } from "@preview/utils/moduleImport";
 
 export default defineComponent({
   name: "home",
-  components: {
-    ModuleRender,
-  },
+  components: {},
   setup() {
     const moduleList = ref<IModule[]>([]);
 
@@ -31,19 +33,14 @@ export default defineComponent({
         let data = JSON.parse(allData);
         moduleList.value = data["/"].modules;
       }
-      console.log(moduleList.value);
     });
 
     return {
+      moduleObj,
       moduleList,
     };
   },
 });
 </script>
 
-<style scoped lang="scss">
-.home-wrapper {
-  height: 100vh;
-  width: 100vw;
-}
-</style>
+<style scoped lang="scss"></style>

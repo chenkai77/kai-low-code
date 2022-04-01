@@ -6,22 +6,9 @@
 <template>
   <div class="center-box" @click="moduleActiveBlur">
     <div class="editor-wrapper">
-      <ModuleDraggable v-model="pageModuleList[activePageRoute].modules">
-        <template #item="item">
-          <div
-            class="drag-item"
-            @click.stop="moduleActive(element)"
-            :class="[
-              {
-                active: element.key === pageActiveModule.key,
-              },
-              calculateClassName(element.name),
-            ]"
-          >
-            <ModuleRender :module-date="element"></ModuleRender>
-          </div>
-        </template>
-      </ModuleDraggable>
+      <ModuleDraggable
+        v-model="pageModuleList[activePageRoute].modules"
+      ></ModuleDraggable>
     </div>
   </div>
 </template>
@@ -32,7 +19,7 @@ import Draggable from "vuedraggable";
 import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
 import useModuleStore from "@editor/store/module";
 import { getModuleStoreData } from "@editor/hooks/moduleStore";
-import ModuleDraggable from "@editor/components/drag/ModuleDraggable.vue";
+import ModuleDraggable from "@editor/components/common/ModuleDraggable.vue";
 
 export default defineComponent({
   name: "home",

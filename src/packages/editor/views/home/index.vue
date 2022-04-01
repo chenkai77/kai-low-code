@@ -17,10 +17,10 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Draggable from "vuedraggable";
-import ModuleDrag from "@editor/views/home/ModuleDrag/index.vue";
-import DataSetting from "@editor/views/home/DataSetting/index.vue";
-import CenterBox from "@editor/views/home/CenterBox/index.vue";
-import TopHeader from "@editor/views/home/TopHeader/index.vue";
+import ModuleDrag from "@editor/views/home/moduleDrag/index.vue";
+import DataSetting from "@editor/views/home/dataSetting/index.vue";
+import CenterBox from "@editor/views/home/centerBox/index.vue";
+import TopHeader from "@editor/views/home/topHeader/index.vue";
 
 export default defineComponent({
   name: "home",

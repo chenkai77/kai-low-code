@@ -4,13 +4,13 @@
  * @Description: 图片组件
 -->
 <template>
-  <div class="image-module" :style="{ 'text-align': textAlign }">
-    <img :src="src" class="image" :style="{ width: width + 'px' }" />
+  <div class="image-module" :style="wrapperStyle">
+    <img :src="src" class="image" :style="imgStyle" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed, StyleValue } from "vue";
 import { attrFormTypeEnum } from "@src/enums/attrFormType";
 
 export default defineComponent({
@@ -59,8 +59,19 @@ export default defineComponent({
       },
     },
   },
-  setup() {
-    return {};
+  setup(props) {
+    const wrapperStyle = computed(() => ({
+      "text-align": props.textAlign,
+    })) as StyleValue;
+
+    const imgStyle = computed(() => ({
+      width: props.width + "px",
+    }));
+
+    return {
+      imgStyle,
+      wrapperStyle,
+    };
   },
 });
 </script>

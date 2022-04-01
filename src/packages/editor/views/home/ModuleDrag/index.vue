@@ -24,7 +24,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PageTab from "./pageTab/index.vue";
-import BasicModule from "./basicModule/index.vue";
 import ModuleList from "./components/ModuleList.vue";
 import { basicPartList, containerPartList } from "@editor/utils/moduleImport";
 
@@ -33,7 +32,6 @@ export default defineComponent({
   components: {
     PageTab,
     ModuleList,
-    BasicModule,
   },
   setup() {
     return {
