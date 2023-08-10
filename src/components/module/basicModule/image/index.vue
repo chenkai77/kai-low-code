@@ -23,7 +23,7 @@ export default defineComponent({
     // 图片地址
     src: {
       type: String,
-      default: "https://chenkai.xyz/xkg/images/banner3.png",
+      default: "https://picsum.photos/seed/picsum/200/300",
       formType: attrFormTypeEnum.Input,
       label: "图片地址",
       sort: 1,

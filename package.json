@@ -10,7 +10,7 @@
   "dependencies": {
     "element-plus": "^2.0.5",
     "pinia": "^2.0.12",
-    "vant": "^3.4.6",
+    "vant": "3.4.6",
     "vue": "^3.2.25",
     "vue-router": "^4.0.13",
     "vuedraggable": "^4.1.0"

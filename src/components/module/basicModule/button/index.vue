@@ -10,9 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch, computed } from "vue";
 import { attrFormTypeEnum } from "@src/enums/attrFormType";
-import { computed } from "@vue/reactivity";
 import { colorProps } from "@src/utils/commonProps";
 
 export default defineComponent({

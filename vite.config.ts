@@ -54,7 +54,7 @@ export default defineConfig({
     minify: "terser",
     rollupOptions: {
       input: {
-        editor: resolve(__dirname, "src/packages/editor/index.html"),
+        editor: resolve(__dirname, "src/packages/editor/main.js"),
         preview: resolve(__dirname, "src/packages/preview/index.html"),
       },
     },
@@ -62,7 +62,7 @@ export default defineConfig({
   server: {
     strictPort: false, // 设为 true 时若端口已被占用则会直接退出，而不是尝试下移一格端口
     host: "0.0.0.0",
-    port: 2022, // 设置服务启动端口号
+    port: 9784, // 设置服务启动端口号
     open: false, // 设置服务启动时是否自动打开浏览器
     cors: true, // 允许跨域
   },
